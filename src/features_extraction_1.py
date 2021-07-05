@@ -17,58 +17,22 @@ Created on Fri Jan  1 00:08:47 2021
 @author: KHC
 """
 # import fitz
-from operator import itemgetter
-import fr_core_news_lg
 import os
 import spacy
-import textract
-from os import listdir
 from os.path import isfile, join
 import docx
 import re
-import csv
-import pandas as pd
-import os
-import nltk
-import datetime
-from dateparser.search import search_dates
-from calendar import month_name,month_abbr
-from datetime import date
-# from sklearn.feature_extraction.text import CountVectorizer
-from itertools import islice
-import nltk
-import pickle
-from nltk.tokenize import word_tokenize
-import numpy as np
-from nltk.corpus import stopwords
-from nltk import download
-from nltk.stem import WordNetLemmatizer
-from nltk.stem import PorterStemmer 
- 
-from natsort import natsorted
-from nltk.stem import PorterStemmer 
-from datasketch import MinHash, MinHashLSH
-from nltk import ngrams
-from nltk import flatten
-import pickle
-
-# nltk.download('punkt')
-# download('stopwords')
-lemmatizer = WordNetLemmatizer() 
-import unidecode
-
-from docx import Document
+#import datetime
 from datetime import datetime
+from dateparser.search import search_dates
+import pickle
+from nltk.stem import WordNetLemmatizer
+import unidecode
 from docx import Document
-
-import glob
-import win32com.client
-
-
-
 import docx2txt
-
+#from calendar import month_name,month_abbr
 from utils_cvs import top_frequent
+lemmatizer = WordNetLemmatizer()
 
 # this function will take a single CV and will return a list of sentences extracted
 #from that CV. It will extract paragraphs as first step and then will convert 
@@ -80,15 +44,11 @@ def convert_to_paras(filename):
     try:
         doc=docx.Document(filename)
         all_paras = doc
-    # #         print('len',len(doc.paragraphs))
-    # #         print(all_paras)
         if len(doc.paragraphs)<=1:
             my_text = docx2txt.process(filename)
             d=Document()
-            d.add_paragraph(my_text)
-    
+            d.add_paragraph(my_text)    
             all_paras = Document() 
-    # #             print(all_paras)
             for s in d.paragraphs:
                 str_list = s.text.split("\n")
                 str_list[:] = [x.strip() for x in str_list if x]
@@ -100,9 +60,7 @@ def convert_to_paras(filename):
                     else:
                         new_para = new_para + "\n" + prev
                     prev = str_list[i]
-     #                         print('%%%%%%%%%%%%%','in')
                     all_paras.add_paragraph(prev)
-     #         print('after',all_paras.paragraphs)
         return all_paras
     except:
          return "" 
@@ -117,30 +75,22 @@ def extract_qualifications(i,sentence,qualifications_list,cv_name):
             if contains_digit or ':' in X.text:
 #                print ('it contains numeric value')
                 pass
-            else:
-            
+            else:            
                 qualifications_list.append(X.text)
-               
-
+              
     qualifications_list=top_frequent(qualifications_list, k=15)
-#    print ('length of qualification list is:',len(qualifications_list))
-        
     return(qualifications_list)
             
 def extract_skills(i,sentence,skills_list,cv_name):
-#    lsm_s = spacy.load(r"C:\Projects\CVsRnkingAmir\code with dataset\code with dataset\model\skill_model_fre")
     doc_skills=lsm_s(sentence)
     for X in doc_skills.ents:
         if X.label_=="skills":
             contains_digit = any(map(str.isdigit, X.text))
-            if contains_digit or ':' in X.text:
-#                print ('it contains numeric value')
+            if contains_digit or ':' in X.text:            
                 pass
             else:
-#                print ('it does not contain numeric value')
                 skills_list.append(X.text)
     skills_list=top_frequent(skills_list, k=15)
-#    print ('length of skills list is:',len(skills_list))
     return(skills_list)
         
             
@@ -406,8 +356,6 @@ cvs_folder=os.path.join(data_path,'cvs')
 models_folder=os.path.join(data_path,'models')
 results_folder=os.path.join(data_path,'results')
 
-
-
 nlp = spacy.load ('fr_core_news_lg')
 lsm_j=spacy.load(os.path.join (models_folder,'job_model_fre'))
 lsm_s=spacy.load(os.path.join (models_folder,'skill_model_fre'))
@@ -423,21 +371,11 @@ main_dictionary={}
 #========================================================================
 
 
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Feb 26 14:04:20 2021
-
-@author: KHC
-"""
-
-
-#========================================================================
-#========================================================================
-
-
 with open (location_txt, "r",encoding="utf8") as myfile:
     data=myfile.read()
-                
+
+
+#todo create a function to perform this action                 
 l_list=data.split ('\n')
 l_list=[l.lower() for l in l_list if l!=""]
     
@@ -456,38 +394,21 @@ today = datetime.today()
 datem = datetime(today.year, today.month, 1)
 
 for cv_data in cvs_list:
-    # print ('*********************************************************')
-    print ('cv name  is:', cv_data['name'])
-    # print ('*********************************************************')
     paras= cv_data['text paras']
-    
-    # print('paras of cv data are:',cv_data['text paras'])
     for couple in cv_data['couples']:
-        
-
         ind1= couple[0] 
         ind2= couple[1]  
-        # print ('value of ind2 is:', ind2)
-        
-        
-        if isinstance(ind2, int):  # check if ind2 is an integer
-                   
+        if isinstance(ind2, int):  # check if ind2 is an integer                  
             couple[0]=paras[ind1]  # this is experience 
             couple[1]=paras[ind2]  # this is for date
             words_list = couple[1].split()
-
-            # Using lambda expression filter the data
             sent = ' '.join((filter(lambda val: val not in custom_stop_words, words_list)))
-
             date_list=search_dates(sent,languages=['fr','es']) 
-#            print ('date list is:', date_list)
             if str(type(date_list))!="<class 'NoneType'>":
                 starting_date=date_list[0][1]
-#                print ('starting date is:',starting_date)
-                
+               
                 if len (date_list)>1:
                     ending_date=date_list[1][1]
-#                    print('ending date is:', ending_date)
                     d=ending_date-starting_date
                     d=d.days
                    
@@ -496,24 +417,16 @@ for cv_data in cvs_list:
                         ending_date=datem 
                         d=ending_date-starting_date
                         d=d.days
-                        # d = divmod(ending_date-starting_date,86400)  # days
-#                        print ('difference in days is:',d)
                     else:
                         ending_date='end date not given'
                         d = 30 # days
-#                        print ('difference in days is:',d)
-                    
-                    
                 couple[2]=starting_date
                 couple[3]=ending_date
                 couple[4]=d
 
-               
+             
             else:
-                couple[0]=paras[ind1]
-                # print('couple without date  is:', couple)
-                # print('paras without date  is:', paras)
-                
+                couple[0]=paras[ind1]               
                 couple[1]='no date attached'
  
 with open(os.path.join(results_folder,'ranking_list.pickle'), 'wb') as handle:
