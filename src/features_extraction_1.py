@@ -266,28 +266,20 @@ location_txt=models_folder+'\locations.txt'
 language_txt=models_folder+'\languages.txt'
 
 main_dictionary={}
-
-
 #========================================================================
 #========================================================================
-
-
 with open (location_txt, "r",encoding="utf8") as myfile:
     data=myfile.read()
 
 
 #todo create a function to perform this action                 
 l_list=data.split ('\n')
-l_list=[l.lower() for l in l_list if l!=""]
-    
-    
+l_list=[l.lower() for l in l_list if l!=""]     
 
 with open (language_txt, "r",encoding="utf8") as myfile:
-    data=myfile.read()
-                
+    data=myfile.read()                
 lang_list=data.split ('\n')
-lang_list=[lang.lower() for lang in lang_list]
-    
+lang_list=[lang.lower() for lang in lang_list]    
 
 cvs_list= make_final_list(cvs_folder)
 custom_stop_words=['a']
@@ -306,13 +298,11 @@ for cv_data in cvs_list:
             sent = ' '.join((filter(lambda val: val not in custom_stop_words, words_list)))
             date_list=search_dates(sent,languages=['fr','es']) 
             if str(type(date_list))!="<class 'NoneType'>":
-                starting_date=date_list[0][1]
-               
+                starting_date=date_list[0][1]               
                 if len (date_list)>1:
                     ending_date=date_list[1][1]
                     d=ending_date-starting_date
-                    d=d.days
-                   
+                    d=d.days                   
                 else:
                     if 'a ce jour' in couple[1] or 'jour' in couple[1] or 'till now' in couple[1]:
                         ending_date=datem 
@@ -323,9 +313,7 @@ for cv_data in cvs_list:
                         d = 30 # days
                 couple[2]=starting_date
                 couple[3]=ending_date
-                couple[4]=d
-
-             
+                couple[4]=d            
             else:
                 couple[0]=paras[ind1]               
                 couple[1]='no date attached'
