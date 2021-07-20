@@ -402,7 +402,7 @@ def make_final_list(dir_cvs):
 #==============================================================================
 
 data_path=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data')
-cvs_folder=os.path.join(data_path,'cvs')
+cvs_folder=os.path.join(data_path,'cvs_1')
 models_folder=os.path.join(data_path,'models')
 results_folder=os.path.join(data_path,'results')
 
@@ -449,7 +449,7 @@ with open (language_txt, "r",encoding="utf8") as myfile:
 lang_list=data.split ('\n')
 lang_list=[lang.lower() for lang in lang_list]
     
-
+print ('cvs folder is:',cvs_folder)
 cvs_list= make_final_list(cvs_folder)
 custom_stop_words=['a']
 today = datetime.today()

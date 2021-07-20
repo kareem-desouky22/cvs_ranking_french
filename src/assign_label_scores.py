@@ -6,15 +6,19 @@ Created on Sun May 30 14:34:41 2021
 """
 
 import pandas as pd
-df = pd.read_excel ('label_scores_1.xlsx',sheet_name='Sorted')
+import os
+
+data_path=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data')
+results_folder=os.path.join(data_path,'results')
+df = pd.read_excel (os.path.join(data_path,'cvs_scores_manual.xlsx'),sheet_name='Sorted')
 print (df)
 
 mymap = {'-':0, 'N/C':0, 'aucun':0}
 
 df=df.applymap(lambda s: mymap.get(s) if s in mymap else s)
-df=df.iloc[:, 7:] 
+#df=df.iloc[:, 5:] 
 
-#df=df.replace({'-': mymap, 'N/C': mymap})
+df=df.replace({'-': mymap, 'N/C': mymap})
 
 
 title_match_w=20
@@ -36,10 +40,12 @@ df['Current position'].astype(float)*current_position_w + \
 df['Qualification'].astype(float)*qual_w+ \
 df['Skills'].astype(float)*skill_w+ \
 df['Location'].astype(float)*location_w+ \
-df['Langue'].astype(float)*lang_w+ \
-df['Contact information'].astype(float)*contact_w
+df['Language'].astype(float)*lang_w+ \
+df['Contact Information'].astype(float)*contact_w
+df=df[['Job ID','without Ext','cv_score']]
 
-df.to_csv('labels.csv')
+
+df.to_csv(os.path.join(results_folder, 'cv_scores_manual.csv'))
 
 #df['Location'].values.astype(float)
 #df['Langue'].values.astype(int)

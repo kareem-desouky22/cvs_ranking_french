@@ -4,7 +4,12 @@ Created on Mon Apr  5 23:40:06 2021
 
 @author: KHC
 """
-
+import pandas as pd
+import gensim.downloader as api
+from gensim import corpora
+from gensim.matutils import softcossim
+import time
+import os
 
 
 job_id= 5838
@@ -20,23 +25,9 @@ industry="Conseils"
 
 
 
-import pickle
-import pandas as pd
-
-# open a file, where you stored the pickled data
-# file = open('cvs_df.pickle', 'rb')
-# Load the Pandas libraries with alias 'pd' 
-import pandas as pd 
 
 
-
-import gensim.downloader as api
-from gensim import corpora
-from gensim.matutils import softcossim
-import time
-
-
-##print ('I am soft cosine and I am called')
+results_folder=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data/results')
 if 'fasttext_model300' in locals():
     print ('fasttest already loaded')
 else:
@@ -45,16 +36,11 @@ else:
     end_time=time.time()
     loading_time=end_time-start_time
     print ('loading time is:',loading_time)
-#from soft_cosine import get_diff
+    
 
-# Read data from file 'filename.csv' 
-# (in the same directory that your python process is based)
-# Control delimiters, rows, column names with read_csv (see later) 
-
-df = pd.read_csv("clean1.csv",converters={'qualification': eval,'skills':eval}) 
+df = pd.read_csv(os.path.join(results_folder,"clean_features.csv"),converters={'qualification': eval,'skills':eval}) 
 df['name'].str.lower()
 # Preview the first 5 lines of the loaded data 
-df.head()
 
 # df['c2'] = df['total_experience']
 
@@ -77,10 +63,6 @@ df['total_experience_score'][mask5_exp] = 9
 df['total_experience_score'][mask6_exp] = 10
 
 
-
-
-
-
 mask1_job_stay = (df['recent_job_experience'] <365) 
 mask2_job_stay = (df['total_experience'] >365) & (df['total_experience'] <365*2)
 mask3_job_stay = (df['total_experience'] >365*2) & (df['total_experience'] <365*4)
@@ -97,7 +79,6 @@ df['recent_exp_score'][mask5_exp] = 10
 
 df = df.dropna(axis=0, subset=['qualification'])
 
-
 df.to_csv('features_scores.csv')
 
 
@@ -108,11 +89,6 @@ def get_diff(phrase_1, phrase_2):
 #    print ('phrase 2 is:',phrase_2)
     sent_1 = phrase_1.split()  # electronics engineer
     sent_2 = phrase_2.split()
-    
-
-# Prepare a dictionary and a corpus.
-
-# Prepare a dictionary and a corpus.
     documents = [sent_1, sent_2]
     dictionary = corpora.Dictionary(documents)
 # Prepare the similarity matrix
@@ -146,15 +122,10 @@ def get_similarity(list_a,feature_string):
         compare_feature_list=jd_language
     elif feature_string=='job_title':
         compare_feature_list=jd_job_title
-    
-        
-        
+      
 
     for l1 in compare_feature_list:  # each element of jd qualification
         for l2 in list_a:
-            
-            
-#        print ('value of l1 is:',l1)
             my_score=get_diff(l1,l2)
 #    my_score=[get_diff(x) for x in zip(list_a, list_b)]
 #        print ('score is:',my_score)
@@ -177,19 +148,8 @@ def clean_recent_job(dirty_list):
 
 df['cleaned_recent_job'] = df.apply(lambda x: clean_recent_job(x['recent_job']), axis = 1)
     
-    
-
-
 df.drop(df.tail(2).index,inplace=True) # drop last n rows
     
-# Two iterables are passed
-
-#df['add'] = df.apply(lambda row : add(row['A'],
-#                     row['B'], row['C']), axis = 1)
-  
-
-#df['job_title_similarity_score_max'] = df.apply(lambda x: get_similarity(x['experience'],'job_title')[0], axis = 1)  # experience
-#df['job_title_similarity_score_sum'] = df.apply(lambda x: get_similarity(x['experience'],'job_title')[1], axis = 1)
 
 df['qualification_similarity_score_max'] = df.apply(lambda x: get_similarity(x['qualification'],'qualification')[0], axis = 1)
 df['qualification_similarity_score_sum'] = df.apply(lambda x: get_similarity(x['qualification'],'qualification')[1], axis = 1)
@@ -206,6 +166,4 @@ df['language_similarity_score_sum'] = df.apply(lambda x: get_similarity(x['langu
 df_classifier_features=df[['name','total_experience_score','recent_exp_score','qualification_similarity_score_max','qualification_similarity_score_sum','skills_similarity_score_max','skills_similarity_score_sum','job_title_similarity_score_max','job_title_similarity_score_sum','location_similarity_score_max','location_similarity_score_sum','language_similarity_score_max','language_similarity_score_sum']]
 # to do: change name of exp 
 
-df_classifier_features.to_csv('classifier_features.csv')
-
-# (df['total_experience'] > 100) 
+df_classifier_features.to_csv(os.path.join(results_folder,'classifier_features.csv'))

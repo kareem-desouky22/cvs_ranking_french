@@ -18,6 +18,7 @@ Created on Fri Jan  1 00:08:47 2021
 """
 # import fitz
 import os
+from os import listdir
 import spacy
 from os.path import isfile, join
 import docx
@@ -208,10 +209,10 @@ def extract_all_features(all_paras,cv_name):
 
 def make_final_list(dir_cvs):    
     
-    dircvs = [join(dir_cvs, f) for f in listdir(dir_cvs) if isfile(join(dir_cvs, f))]
-    alltext = [] 
+    dir_cvs = [join(dir_cvs, f) for f in listdir(dir_cvs) if isfile(join(dir_cvs, f))]
+#    alltext = [] 
     cvs_list= []
-    for cv in dircvs:
+    for cv in dir_cvs:
         print ('**************************************************************')
         print('SCANNING NEW CV')
         cvs_dict= dict()
@@ -228,21 +229,21 @@ def make_final_list(dir_cvs):
             couples,experience_list, experience_index,dates_index, sent_list, qualification_list, skills_list, locations_list, languages_list,email_list, phone_list= extract_all_features(paras_list,name)
             # qualification=extract_qualification(sent_list,name)
             
-            cvs_dict['name'] = name
+            cvs_dict['name_cv'] = name
             cvs_dict['text paras'] = sent_list
             cvs_dict['couples'] = couples
-            cvs_dict['qualification']=qualification_list
-            cvs_dict['skills']=skills_list
-            cvs_dict['location']=locations_list            
-            cvs_dict['languages']=languages_list
-            cvs_dict['phone_numbers']=phone_list
-            cvs_dict['emails']=email_list
-            cvs_dict['experience']=experience_list
+            cvs_dict['qualification_cv']=qualification_list
+            cvs_dict['skills_cv']=skills_list
+            cvs_dict['location_cv']=locations_list            
+            cvs_dict['languages_cv']=languages_list
+            cvs_dict['phone_numbers_cv']=phone_list
+            cvs_dict['emails_cv']=email_list
+            cvs_dict['experience_cv']=experience_list
             cvs_dict['experience_index']=experience_index
             cvs_dict['date index']=dates_index
-            cvs_dict['recent_job']='no job'
-            cvs_dict['recent_job_experience']=0
-            cvs_dict['total_experience']=0
+            cvs_dict['recent_job_cv']='no job'
+            cvs_dict['recent_job_experience_cv']=0
+            cvs_dict['total_experience_cv']=0
             # cvs_dict['duration']='2 years'
             
             cvs_list.append(cvs_dict)
@@ -253,7 +254,7 @@ def make_final_list(dir_cvs):
 #==============================================================================
 
 data_path=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data')
-cvs_folder=os.path.join(data_path,'cvs')
+cvs_folder=os.path.join(data_path,'cvs_1')
 models_folder=os.path.join(data_path,'models')
 results_folder=os.path.join(data_path,'results')
 
@@ -281,6 +282,7 @@ with open (language_txt, "r",encoding="utf8") as myfile:
 lang_list=data.split ('\n')
 lang_list=[lang.lower() for lang in lang_list]    
 
+print ('cvs folder is:',cvs_folder)
 cvs_list= make_final_list(cvs_folder)
 custom_stop_words=['a']
 today = datetime.today()
