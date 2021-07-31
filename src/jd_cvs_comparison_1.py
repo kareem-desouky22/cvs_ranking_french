@@ -94,7 +94,7 @@ def get_diff(phrase_1, phrase_2):
     return(diff)
 
 def get_similarity(list_cv,list_jd):
-    print ('list of cvs is:',list_cv)
+    print ('list of cvs is:',list_cv) 
     max_score=0
     sum_score=0
     diff_list=[]
@@ -141,7 +141,7 @@ df.drop(df.tail(2).index,inplace=True) # drop last n rows
 
 df['qualification_similarity_score_max_cv'] = df.apply(lambda x: get_similarity(x['qualification_cv'],x['qualifications_jd'])[0], axis = 1)
 #
-df['qualification_similarity_score_sum_cv'] = df.apply(lambda x: get_similarity(x['qualification_cv'],x['qualification_jd'])[1], axis = 1)
+df['qualification_similarity_score_sum_cv'] = df.apply(lambda x: get_similarity(x['qualification_cv'],x['qualifications_jd'])[1], axis = 1)
 #df['skills_similarity_score_max'] = df.apply(lambda x: get_similarity(x['skills'],'skill')[0], axis = 1)
 #df['skills_similarity_score_sum'] = df.apply(lambda x: get_similarity(x['skills'],'skill')[1], axis = 1)
 df['recent_job_title_similarity_score_max_cv'] = df.apply(lambda x: get_similarity(x['cleaned_recent_job'],x['jobTitle'])[0], axis = 1)
