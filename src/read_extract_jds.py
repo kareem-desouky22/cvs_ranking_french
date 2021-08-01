@@ -26,6 +26,7 @@ df_jd['qualifications_jd']=df_jd.qualification.str.split("|")
 df_jd['job_title_jd']=df_jd['jobTitle'].str.split(":")
 df_jd['location_jd']=df_jd['locations'].str.split(":")
 df_jd.drop(['jobTitle','qualification','locations'],axis=1, inplace=True)
+df_jd.to_csv('jds.csv')
 #
 #
 #file = open(os.path.join(results_folder,'clean_df.pickle'), 'rb')
