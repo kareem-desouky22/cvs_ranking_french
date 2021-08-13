@@ -10,14 +10,75 @@ import pandas as pd
 import json
 import os
 import pickle
+import re
+import unidecode
+import spacy
+
+def clean_string(sent):
+    sentence=sent.lower().strip()
+    sentence=unidecode.unidecode(sentence)
+    #remove multiple spaces
+    sentence = re.sub(r"\s+"," ", sentence, flags = re.I)
+    sentence = re.sub(r"^\s+", "", sentence)
+    sentence = re.sub(r"^\s+", "", sentence)
+    return (sentence)
+
+
+def extract_skills(clean_sent):
+    
+    skills_list=[]
+    doc_skills=lsm_s(clean_sent)
+    for X in doc_skills.ents:
+        if X.label_=="skills":
+            contains_digit = any(map(str.isdigit, X.text))
+            if contains_digit or ':' in X.text:            
+                pass
+            else:
+                skills_list.append(X.text)
+#    skills_list=top_frequent(skills_list, k=15)
+    return(skills_list)
+
+def extract_qualifications(clean_sent):
+    qualifications_list=[]
+    doc_qual=lsm_q(clean_sent)
+    for X in doc_qual.ents:
+        if X.label_=="qualification":
+            contains_digit = any(map(str.isdigit, X.text))
+            if contains_digit or ':' in X.text:
+                pass
+            else:            
+                qualifications_list.append(X.text)
+                
+    return qualifications_list
+                
+
+
+
+
 
 data_path=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data')
+models_folder=os.path.join(data_path,'models')
 results_folder=os.path.join(data_path,'results')
 
+
+
+
+nlp = spacy.load ('fr_core_news_lg')
+lsm_j=spacy.load(os.path.join (models_folder,'job_model_fre'))
+lsm_s=spacy.load(os.path.join (models_folder,'skill_model_fre'))
+lsm_q=spacy.load(os.path.join (models_folder,'Qualification_model_fre'))
+location_txt=models_folder+'\locations.txt'
+language_txt=models_folder+'\languages.txt'
+
+#json_file=os.path.join(results_folder,'jds_5.json')
+#
 with open(os.path.join(data_path,'jds_5.json'),encoding="utf8") as f:
   data = json.load(f)
   
+#data=json.loads(json_file)
+  
 df_jd=pd.DataFrame(data)
+df_jd=df_jd.fillna('')
 df_jd['qualifications_jd']=df_jd.qualification.str.split("|")
 
 
@@ -26,7 +87,51 @@ df_jd['qualifications_jd']=df_jd.qualification.str.split("|")
 df_jd['job_title_jd']=df_jd['jobTitle'].str.split(":")
 df_jd['location_jd']=df_jd['locations'].str.split(":")
 df_jd.drop(['jobTitle','qualification','locations'],axis=1, inplace=True)
-df_jd.to_csv('jds.csv')
+
+  # Cleaning the text
+df_jd['candidate_profile'] = df_jd.apply(lambda x: clean_string(x['Candidate-profile']), axis = 1)
+
+df_jd['job_mission'] = df_jd.apply(lambda x: clean_string(x['Job_mission']), axis = 1)
+
+
+# Extraction of skills and qualifications from Candidate profile:
+
+df_jd['skills_list_profile'] = df_jd.apply(lambda x: extract_skills(x['candidate_profile']), axis = 1)
+
+df_jd['qualifications_list_profile'] = df_jd.apply(lambda x: extract_qualifications(x['candidate_profile']), axis = 1)
+
+
+
+
+# Extraction of skills and qualifications from Job Mission:
+
+df_jd['skills_list_mission'] = df_jd.apply(lambda x: extract_skills(x['job_mission']), axis = 1)
+
+df_jd['qualifications_list_mission'] = df_jd.apply(lambda x: extract_qualifications(x['job_mission']), axis = 1)
+
+
+#  Final qualification list
+df_jd['final_qualifications_jd'] =df_jd['qualifications_list_profile']+df_jd['qualifications_list_mission']+df_jd['qualifications_jd']
+
+
+#  Final skills list
+df_jd['final_skills_jd'] =df_jd['skills_list_profile']+df_jd['skills_list_mission']+df_jd['skills']
+
+
+df_jd.drop(['Candidate-profile','Job_mission','candidate_profile','job_mission','skills_list_profile','skills_list_mission',],axis=1, inplace=True)
+
+#df_jd.to_csv('jds.csv')
+
+
+
+
+
+
+
+
+
+#df['qualification_similarity_score_max_cv'] = df.apply(lambda x: get_similarity(x['qualification_cv'],x['qualifications_jd'])[0], axis = 1)
+
 #
 #
 #file = open(os.path.join(results_folder,'clean_df.pickle'), 'rb')
@@ -49,7 +154,7 @@ df_jd.to_csv('jds.csv')
 #
 #
 ##merged_df = df_cvs.merge(jd_cvs, how = 'left', on = "cv_name")
-#
+#--
 #out=df_cvs.merge(jd_cvs,left_on=('name'),right_on=('cv_name'),how='outer',suffixes=('_left','_right'))
 #
 #

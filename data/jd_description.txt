@@ -1,0 +1,17 @@
+ {
+      "jobID": 5863,
+      "jobTitle": "Title of the Job Offer  {Column: H}",
+      "Job_introduction": " Introduction / Presentation of the job offer, Company info... etc ",
+      "Job_mission": " Includes Skills {Column: O}, may also includes Qualifications {Column: N}  ",
+      "Candidate-profile": " Includes qualifications AND many other times SKILLs too   {Column: N} && {Column: O} ",
+      "Job-miscs": " May include : Language / City ... , {Column: P} && {Column: Q} ",
+      "expLevel": "Experience Level requested by Employer , {Column: K} ",
+      "qualification": "Diploma / Degree, required by Employer , {Column: N} ",
+      "industry": "Job industry / Category",
+      "Sub-industry": " Sub-level of Job Industry / Category ",
+      "tags": "Tags entered by Employer",
+      "locations": "City where the job is offered ,  {Column: P} ",
+      "roleDesignation": "Main job position  , {Column: i } ",
+      "jobExperience": "Experience required in number of years ,  {Column: L} ",
+      "skills": [ "Array of Skills entered by Employer ,  {Column: O} " ]
+    },

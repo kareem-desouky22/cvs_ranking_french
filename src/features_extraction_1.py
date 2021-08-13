@@ -194,7 +194,7 @@ def extract_all_features(all_paras,cv_name):
         sentence = re.sub(r"\s+"," ", sentence, flags = re.I)
         sentence = re.sub(r"^\s+", "", sentence)
         sentence = re.sub(r"^\s+", "", sentence)
-        all_sentences.append(sentence)
+        all_sentences.append(sentence)   # Whats the use of all_sentence ?
         extract_job_date(i,job_title_list,sentence,experience_list,experience_index,dates_index,cv_name)
         q_list=extract_qualifications(i,sentence,qualifications_list,cv_name)
         s_list=extract_skills(i,sentence,skills_list,cv_name)
@@ -261,7 +261,6 @@ results_folder=os.path.join(data_path,'results')
 nlp = spacy.load ('fr_core_news_lg')
 lsm_j=spacy.load(os.path.join (models_folder,'job_model_fre'))
 lsm_s=spacy.load(os.path.join (models_folder,'skill_model_fre'))
-lsm_j=spacy.load(os.path.join (models_folder,'job_model_fre'))
 lsm_q=spacy.load(os.path.join (models_folder,'Qualification_model_fre'))
 location_txt=models_folder+'\locations.txt'
 language_txt=models_folder+'\languages.txt'
