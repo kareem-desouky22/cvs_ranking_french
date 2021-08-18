@@ -1,8 +1,4 @@
-,name,total_experience_score,recent_exp_score,qualification_similarity_score_max,qualification_similarity_score_sum,recent_job_title_similarity_score_max,recent_job_title_similarity_score_sum,location_similarity_score_max,location_similarity_score_sum,language_similarity_score_max,language_similarity_score_sum
-0,1528253745412_HOCINE-Slim-CV,2,4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-1,Adel-Amine-ZOUAOUI_CV,10,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-2,Ahmed-DJADOURI-CV,2,4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-3,AMRANE-RAHMA,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-4,ATROUCHE-CV-FR-,10,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-5,BENOUZA-manel-GRH,2,4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-6,C.V-B-Med,2,4,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+,name,qualifications_similarity_score_max,qualifications_similarity_score_sum,skills_similarity_score_max,skills_similarity_score_sum,locations_similarity_score_max,locations_similarity_score_sum
+0,cv_candidat-haddad-3,0.0,0.0,0.0,0.0,0.0,0.0
+16,cv_candidat-haddad-3,0.0,0.0,0.0,0.0,0.0,0.0
+17,oualid-cv,0.8430204361971348,4.100032681747025,1.0,4.617001203284683,0.0,0.0

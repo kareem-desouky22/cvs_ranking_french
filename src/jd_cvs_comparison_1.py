@@ -11,6 +11,7 @@ from gensim.matutils import softcossim
 import time
 import os
 import pickle
+import math
 
 
 
@@ -99,6 +100,9 @@ def get_similarity(list_cv,list_jd):
     sum_score=0
     diff_list=[]
     
+#    if math.isnan(list_jd) or math.isnan(list_cv):
+#        print('got nan value')
+#    else:
     for l1 in list_jd:  # each element of jd qualification
         print ('jd element is:', l1)
         for l2 in list_cv:
@@ -110,10 +114,6 @@ def get_similarity(list_cv,list_jd):
                 diff_list.append(my_score)
                 
             
-#    my_score=[get_diff(x) for x in zip(list_a, list_b)]
-#        print ('score is:',my_score)
-            
-#            print ('returning list is:', diff_list)
     if len (diff_list)>0:
         max_score=max(diff_list)
         sum_score=sum(diff_list)
@@ -134,27 +134,34 @@ def clean_recent_job(dirty_list):
         
     return (clean_list)
 
-df['cleaned_recent_job'] = df.apply(lambda x: clean_recent_job(x['recent_job_cv']), axis = 1)
+#df['cleaned_recent_job'] = df.apply(lambda x: clean_recent_job(x['recent_job_cv']), axis = 1)
     
 df.drop(df.tail(2).index,inplace=True) # drop last n rows
+
+
+
+df = df.dropna(axis=0, subset=['qualification_cv','final_qualifications_jd','skills_cv','final_skills_jd','location_cv','final_locs_jd','languages_cv','final_langs_jd' ])
     
 
-df['qualification_similarity_score_max_cv'] = df.apply(lambda x: get_similarity(x['qualification_cv'],x['qualifications_jd'])[0], axis = 1)
+df['qualifications_similarity_score_max'] = df.apply(lambda x: get_similarity(x['qualification_cv'],x['final_qualifications_jd'])[0], axis = 1)
+
+df['qualifications_similarity_score_sum'] = df.apply(lambda x: get_similarity(x['qualification_cv'],x['final_qualifications_jd'])[1], axis = 1)
+
+df['skills_similarity_score_max'] = df.apply(lambda x: get_similarity(x['skills_cv'],x['final_skills_jd'])[0], axis = 1)
+df['skills_similarity_score_sum'] = df.apply(lambda x: get_similarity(x['skills_cv'],x['final_skills_jd'])[1], axis = 1)
+
+
+#df['job_title_similarity_score_max_cv'] = df.apply(lambda x: get_similarity(x['cleaned_recent_job'],x['job_title_jd'])[0], axis = 1)
 #
-df['qualification_similarity_score_sum_cv'] = df.apply(lambda x: get_similarity(x['qualification_cv'],x['qualifications_jd'])[1], axis = 1)
-#df['skills_similarity_score_max'] = df.apply(lambda x: get_similarity(x['skills'],'skill')[0], axis = 1)
-#df['skills_similarity_score_sum'] = df.apply(lambda x: get_similarity(x['skills'],'skill')[1], axis = 1)
-df['recent_job_title_similarity_score_max_cv'] = df.apply(lambda x: get_similarity(x['cleaned_recent_job'],x['jobTitle'])[0], axis = 1)
+#df['job_title_similarity_score_sum_cv'] = df.apply(lambda x: get_similarity(x['cleaned_recent_job'],x['job_title_jd'])[1], axis = 1)
 
-df['recent_job_title_similarity_score_sum_cv'] = df.apply(lambda x: get_similarity(x['cleaned_recent_job'],x['jobTitle'])[1], axis = 1)
+df['locations_similarity_score_max'] = df.apply(lambda x: get_similarity(x['location_cv'],x['final_locs_jd'])[0], axis = 1)
 
-df['location_similarity_score_max_cv'] = df.apply(lambda x: get_similarity(x['location_cv'],x['location_jd'])[0], axis = 1)
-#
-df['location_similarity_score_sum_cv'] = df.apply(lambda x: get_similarity(x['location_cv'],x['location_jd'])[1], axis = 1)
+df['locations_similarity_score_sum'] = df.apply(lambda x: get_similarity(x['location_cv'],x['final_locs_jd'])[1], axis = 1)
 
-#df['language_similarity_score_max_cv'] = df.apply(lambda x: get_similarity(x['languages_cv'],x['language_jd'])[0], axis = 1)
-##
-#df['language_similarity_score_sum_cv'] = df.apply(lambda x: get_similarity(x['languages_cv'],x['language_jd'])[1], axis = 1)
+df['languages_similarity_score_max'] = df.apply(lambda x: get_similarity(x['languages_cv'],x['final_langs_jd'])[0], axis = 1)
+
+df['languages_similarity_score_sum'] = df.apply(lambda x: get_similarity(x['languages_cv'],x['final_langs_jd'])[1], axis = 1)
 
 
 
@@ -162,7 +169,7 @@ df['location_similarity_score_sum_cv'] = df.apply(lambda x: get_similarity(x['lo
 # to do: change name of exp 
 
 
-df_classifier_features=df[['name','total_experience_score','recent_exp_score','qualification_similarity_score_max','qualification_similarity_score_sum','recent_job_title_similarity_score_max','recent_job_title_similarity_score_sum','location_similarity_score_max','location_similarity_score_sum']]
+df_classifier_features=df[['name','qualifications_similarity_score_max','qualifications_similarity_score_sum','skills_similarity_score_max','skills_similarity_score_sum','locations_similarity_score_max','locations_similarity_score_sum']]
 ## to do: change name of exp 
 #
 df_classifier_features.to_csv(os.path.join(results_folder,'classifier_features.csv'))

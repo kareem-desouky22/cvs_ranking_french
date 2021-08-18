@@ -200,4 +200,4 @@ jd_cvs_combined=df_jd.merge(out,left_on=('jobID'),right_on=('Job ID'),how='outer
 with open(os.path.join(results_folder,'combined_df.pickle'), 'wb') as handle:
     pickle.dump(jd_cvs_combined, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-##jd_cvs_combined.to_csv(os.path.join(results_folder, 'jd_cvs_combined.csv'))
+jd_cvs_combined.to_csv(os.path.join(results_folder, 'jd_cvs_combined.csv'))
