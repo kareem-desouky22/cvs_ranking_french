@@ -132,11 +132,11 @@ def extract_email(i,sentence,email_list,cv_name):
     email_list.append(re.findall('\S+@\S+', s))
 
 
-def make_couples(job_title_list,exp_ind,jobs_jobs_dates_index):
+def make_couples(job_title_list,job_ind,jobs_dates_index):
     thresh= 4
     couples= []
     matched_dates=[]
-    for i in exp_ind:
+    for i in job_ind:
         if len(jobs_dates_index)>0:
             closest_match= min(jobs_dates_index, key=lambda x:abs(x-i))
             difference_inds= (i-closest_match)
@@ -254,7 +254,7 @@ def make_final_list(dir_cvs):
 #==============================================================================
 
 data_path=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data')
-cvs_folder=os.path.join(data_path,'cvs_2')
+cvs_folder=os.path.join(data_path,'cvs_1')
 models_folder=os.path.join(data_path,'models')
 results_folder=os.path.join(data_path,'results')
 
