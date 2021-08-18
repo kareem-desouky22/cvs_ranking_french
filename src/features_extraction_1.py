@@ -321,9 +321,9 @@ for cv_data in cvs_list:
  
 with open(os.path.join(results_folder,'ranking_list.pickle'), 'wb') as handle:
     pickle.dump(cvs_list, handle, protocol=pickle.HIGHEST_PROTOCOL)       
-#df = pd.DataFrame(cvs_list) 
+df = pd.DataFrame(cvs_list) 
 
-#df.to_csv(os.path.join(results_folder,'ranking.csv'))
+df.to_csv(os.path.join(results_folder,'ranking.csv'))
 
 
 
