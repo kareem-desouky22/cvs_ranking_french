@@ -155,32 +155,41 @@ def make_couples(job_title_list,exp_ind,dates_index):
     return couples
         
   
-def extract_job_date(i,job_title_list,sentence,experience_list,experience_index,dates_index,cv_name):
+#def extract_job_date(i,job_title_list,sentence,experience_list,experience_index,dates_index,cv_name):
+def extract_job_date(i,jobs_titles_list,sentence,jobs_titles_index,jobs_dates_index,cv_name):
     doc_job=lsm_j(sentence)
     for X in doc_job.ents:
         if X.label_=='job title':
             job_found=X.text
-            experience_list.append(job_found)
-            experience_index.append(i)
-            job_title_list.append(job_found)
+#            experience_list.append(job_found)
+            jobs_titles_list.append(job_found)
+            
+#            experience_index.append(i)
+            jobs_titles_index.append(i)
+#            job_title_list.append(job_found)
 
     date_=search_dates(sentence,languages=['fr']) 
     if str(type(date_))!="<class 'NoneType'>":
-        dates_index.append(i)
+#        dates_index.append(i)
+        jobs_dates_index.append(i)
         
 
 def extract_all_features(all_paras,cv_name):
     job_found=''
-    job_title_list=[]
-    dates_list=[]
-    experience_list=[]
-    experience_index=[]
+    
+    jobs_dates_list=[]
+#    experience_list=[]
+    jobs_titles_list=[]
+#    experience_index=[]
+    jobs_titles_index=[]
     skills_list=[]
     qualifications_list=[]
     languages_list=[]
     locations_list=[]
     all_sentences=[]
-    dates_index=[]
+#    dates_index=[]
+    jobs_dates_index=[]
+    
     email_list=[]
     phone_list=[]
     all_text=all_paras.paragraphs
@@ -195,15 +204,21 @@ def extract_all_features(all_paras,cv_name):
         sentence = re.sub(r"^\s+", "", sentence)
         sentence = re.sub(r"^\s+", "", sentence)
         all_sentences.append(sentence)   # Whats the use of all_sentence ?
-        extract_job_date(i,job_title_list,sentence,experience_list,experience_index,dates_index,cv_name)
+#        extract_job_date(i,job_title_list,sentence,experience_list,experience_index,dates_index,cv_name)
+        
+        
+#         extract_job_date(i,job_title_list,sentence,experience_list,experience_index,dates_index,cv_name)
+        extract_job_date(i,jobs_titles_list,sentence,jobs_titles_index,jobs_dates_index,cv_name)
         q_list=extract_qualifications(i,sentence,qualifications_list,cv_name)
         s_list=extract_skills(i,sentence,skills_list,cv_name)
         lang_list=extract_languages(i,sentence,languages_list,cv_name)  #language list
         loc_list=extract_locations(i,sentence,locations_list,cv_name)  #location list
         extract_phone(i,sentence,phone_list,cv_name)  #location list
         extract_email(i,sentence,email_list,cv_name)  #location list
-    couples= make_couples(job_title_list,experience_index,dates_index)
-    return couples, experience_list, experience_index,dates_index,all_sentences, q_list, s_list, loc_list, lang_list, email_list, phone_list
+#    couples= make_couples(job_title_list,experience_index,dates_index)
+        couples= make_couples(jobs_titles_list,jobs_titles_index,jobs_dates_index)
+#    return couples, experience_list, experience_index,dates_index,all_sentences, q_list, s_list, loc_list, lang_list, email_list, phone_list
+        return couples, jobs_titles_list, jobs_titles_index, jobs_dates_index,all_sentences, q_list, s_list, loc_list, lang_list, email_list, phone_list
                         
 
 
@@ -226,7 +241,9 @@ def make_final_list(dir_cvs):
         
          
         if paras_list!="":
-            couples,experience_list, experience_index,dates_index, sent_list, qualification_list, skills_list, locations_list, languages_list,email_list, phone_list= extract_all_features(paras_list,name)
+#            couples,jobs_titles_list, experience_index,dates_index, sent_list, qualification_list, skills_list, locations_list, languages_list,email_list, phone_list= extract_all_features(paras_list,name)
+            
+            couples,jobs_titles_list, jobs_titles_index,jobs_dates_index, sent_list, qualification_list, skills_list, locations_list, languages_list,email_list, phone_list= extract_all_features(paras_list,name)
             # qualification=extract_qualification(sent_list,name)
             
             cvs_dict['name_cv'] = name
@@ -238,12 +255,16 @@ def make_final_list(dir_cvs):
             cvs_dict['languages_cv']=languages_list
             cvs_dict['phone_numbers_cv']=phone_list
             cvs_dict['emails_cv']=email_list
-            cvs_dict['experience_cv']=experience_list
-            cvs_dict['experience_index']=experience_index
-            cvs_dict['date index']=dates_index
+#            cvs_dict['experience_cv']=experience_list
+#            cvs_dict['experience_index']=experience_index
+#            cvs_dict['date index']=dates_index
+            
+            cvs_dict['jobs_titles_cv']=jobs_titles_list
+            cvs_dict['jobs_titles_index']=jobs_titles_index
+            cvs_dict['jobs_date_index']=jobs_dates_index
             cvs_dict['recent_job_cv']='no job'
             cvs_dict['recent_job_experience_cv']=0
-            cvs_dict['total_experience_cv']=0
+            cvs_dict['total_duration_experience_cv']=0
             # cvs_dict['duration']='2 years'
             
             cvs_list.append(cvs_dict)
