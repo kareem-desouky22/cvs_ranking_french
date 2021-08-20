@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 results_folder=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data/results')
-file_list = open(os.path.join(results_folder,'ranking_list.pickle'), 'rb')
+file_list = open(os.path.join(results_folder,'ranking_list1.pickle'), 'rb')
 data = pickle.load(file_list)
 file_list.close()
 for dicts in data:

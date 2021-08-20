@@ -150,8 +150,11 @@ def make_couples(job_title_list,job_ind,dates_list, jobs_dates_index):
             difference_inds= (i-closest_match)
             if difference_inds>=0 and difference_inds<=thresh and closest_match not in matched_dates:
                             
-                d_ind=jobs_dates_index.index(closest_match)                              
+                d_ind=jobs_dates_index.index(closest_match)  
+#                couples.append([job_title_list[j_ind][0],dates_list[d_ind][0], 'start_date', 'end_date',30])
+                            
                 couples.append([job_title_list[j_ind],dates_list[d_ind], 'start_date', 'end_date',30])
+#                couples.append(['testing','date', 'start_date', 'end_date',30])
                 matched_dates.append(closest_match)
               
             else:
@@ -159,11 +162,13 @@ def make_couples(job_title_list,job_ind,dates_list, jobs_dates_index):
                 if  difference_inds>=thresh and closest_match not in matched_dates:
                     d_ind=jobs_dates_index.index(closest_match)
                     couples.append([job_title_list[j_ind],dates_list[d_ind],'start_date', 'end_date',30])
+
                     matched_dates.append(closest_match)
-                    print ('closest match is:', closest_match)
-                    print ('couple list value is:', couples)
+#                    print ('closest match is:', closest_match)
+#                    print ('couple list value is:', couples)
         else:
             couples.append([job_title_list[j_ind],'no date', 'start_date', 'end_date',30])  # 30 days of duration by default
+#            couples.append(['testing','no date', 'start_date', 'end_date',30])
             matched_dates.append('no date')
 
     return couples
@@ -173,8 +178,8 @@ def extract_job_date(i,sentence,jobs_titles_list,jobs_titles_index_list,jobs_dat
     doc_job=lsm_j(sentence)
     for X in doc_job.ents:
         if X.label_=='job title':
-#            job_found=X.text
-            job_found=X.ents
+            job_found=X.text
+#            job_found=X.ents
 #            print ('job found is:',job_found)
             jobs_titles_list.append(job_found)
             jobs_titles_index_list.append(i)
@@ -253,7 +258,7 @@ def make_final_list(dir_cvs):
             cvs_dict['phone_numbers_cv']=phone_list
             cvs_dict['emails_cv']=email_list
             cvs_dict['job_titles_cv']=jobs_titles_list
-            cvs_dict['jobs_titles_index_list']=jobs_titles_index_list
+#            cvs_dict['jobs_titles_index_list']=jobs_titles_index_list
             cvs_dict['recent_job_cv']='no job'
             cvs_dict['recent_job_title_cv']=0
             cvs_dict['total_experience_cv']=0
@@ -287,7 +292,7 @@ datem = datetime(today.year, today.month, 1)
 for i, cv_data in enumerate(cvs_list):
     for couple in cv_data['couples']:
         dates_list=couple[1] # 2nd index is of date
-        if str(type(dates_list))!="<class 'NoneType'>":
+        if str(type(dates_list))!="<class 'NoneType'>" or str(type(dates_list)) !='test':
                 starting_date=dates_list[0][1]               
                 if len (dates_list)>1:
                     ending_date=dates_list[1][1]
@@ -312,9 +317,13 @@ for i, cv_data in enumerate(cvs_list):
             pass
 
         del couple[2:5]
-     
-df = pd.DataFrame(cvs_list) 
 
+
+
+with open(os.path.join(results_folder,'clean_d11f.pickle'), 'wb') as handle:
+    pickle.dump(cvs_list, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    
+df = pd.DataFrame(cvs_list) 
 df.to_csv(os.path.join(results_folder,'ranking1.csv'))
 
 
