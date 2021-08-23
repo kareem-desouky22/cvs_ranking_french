@@ -18,8 +18,10 @@ Created on Fri Jan  1 00:08:47 2021
 """
 # import fitz
 
-import time
-start_time= time.now()
+from datetime import datetime
+
+start_time = datetime.now()
+
 import os
 from os import listdir
 import spacy
@@ -37,7 +39,7 @@ import docx2txt
 #from calendar import month_name,month_abbr
 from utils_cvs import top_frequent
 lemmatizer = WordNetLemmatizer()
-import pandas as pd
+
 
 # this function will take a single CV and will return a list of sentences extracted
 #from that CV. It will extract paragraphs as first step and then will convert 
@@ -274,7 +276,7 @@ def make_final_list(dir_cvs):
     #     END OF make_final_list function
 #==============================================================================
 data_path=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data')
-cvs_folder=os.path.join(data_path,'cvs_2')
+cvs_folder=os.path.join(data_path,'cvs')
 models_folder=os.path.join(data_path,'models')
 results_folder=os.path.join(data_path,'results')
 
@@ -323,12 +325,12 @@ for i, cv_data in enumerate(cvs_list):
 
 
 
-with open(os.path.join(results_folder,'ranking_list1.pickle'), 'wb') as handle:
+with open(os.path.join(results_folder,'ranking_list.pickle'), 'wb') as handle:
     pickle.dump(cvs_list, handle, protocol=pickle.HIGHEST_PROTOCOL)
     
 #df = pd.DataFrame(cvs_list) 
 #df.to_csv(os.path.join(results_folder,'ranking1.csv'))
-end_time=time.now()
+end_time=datetime.now()
 simulation_time=end_time-start_time
 print ('time for features extraction from CV is:', simulation_time, ' seconds')
 

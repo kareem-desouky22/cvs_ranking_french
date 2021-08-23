@@ -111,7 +111,7 @@ lang_list=[lang.lower() for lang in lang_list]
 
 #json_file=os.path.join(results_folder,'jds_5.json')
 #
-with open(os.path.join(data_path,'jds_7.json'),encoding="utf8") as f:
+with open(os.path.join(data_path,'jds.json'),encoding="utf8") as f:
   data = json.load(f)
   
 #data=json.loads(json_file)

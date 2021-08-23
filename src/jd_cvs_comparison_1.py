@@ -16,6 +16,10 @@ import os
 import pickle
 import math
 
+from datetime import datetime
+
+start_time = datetime.now()
+
 
 
 results_folder=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data/results')
