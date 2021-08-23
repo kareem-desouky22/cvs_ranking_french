@@ -12,23 +12,23 @@ for dicts in data:
     if len(couples_list[0])>0:
         for i,element in enumerate(couples_list):
             latest_post=couples_list[i][0][0]
-            latest_post_duration=couples_list[i][0][4]
+            latest_post_duration=couples_list[i][0][1]
             total_exp=0
             for j in element:
-                if j[4]>0: # dont add experience if it is negative 
-                    total_exp=total_exp+j[4] # add experience of all jobs
+                if j[1]>0: # dont add experience if it is negative 
+                    total_exp=total_exp+j[1] # add experience of all jobs
                 else:
-                    j[4]=0  #  negative value is incorrect
+                    j[1]=0  #  negative value is incorrect
         dicts['recent_job_cv']=latest_post
-        dicts['recent_job_experience']=latest_post_duration
+        dicts['recent_job_duration']=latest_post_duration
         dicts['total_experience_cv']=total_exp
         
     else:
         continue
 
 df = pd.DataFrame(data) 
-df=df[df.astype(str)['qualification_cv'] != '[]']
-df = df.drop(['couples','text paras','experience_index','date index'],axis=1)
+#df=df[df.astype(str)['qualification_cv'] != '[]']
+#df = df.drop(['text paras','experience_index','date index'],axis=1)
 
 with open(os.path.join(results_folder,'clean_df.pickle'), 'wb') as handle:
     pickle.dump(df, handle, protocol=pickle.HIGHEST_PROTOCOL)

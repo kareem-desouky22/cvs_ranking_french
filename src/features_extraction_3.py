@@ -17,6 +17,9 @@ Created on Fri Jan  1 00:08:47 2021
 @author: KHC
 """
 # import fitz
+
+import time
+start_time= time.now()
 import os
 from os import listdir
 import spacy
@@ -320,12 +323,14 @@ for i, cv_data in enumerate(cvs_list):
 
 
 
-with open(os.path.join(results_folder,'clean_d11f.pickle'), 'wb') as handle:
+with open(os.path.join(results_folder,'ranking_list1.pickle'), 'wb') as handle:
     pickle.dump(cvs_list, handle, protocol=pickle.HIGHEST_PROTOCOL)
     
-df = pd.DataFrame(cvs_list) 
-df.to_csv(os.path.join(results_folder,'ranking1.csv'))
-
+#df = pd.DataFrame(cvs_list) 
+#df.to_csv(os.path.join(results_folder,'ranking1.csv'))
+end_time=time.now()
+simulation_time=end_time-start_time
+print ('time for features extraction from CV is:', simulation_time, ' seconds')
 
 
 

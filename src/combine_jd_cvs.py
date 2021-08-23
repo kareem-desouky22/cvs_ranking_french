@@ -59,10 +59,7 @@ def extract_locations(sent):
     for X in doc_all.ents:
         if (X.label_=='GPE'):
             locations_list.append(X.text)            
-    words_list=sent.split(' ')
-    for w in words_list:
-        if w in l_list:
-            locations_list.append(w)
+
 #    loc_list=top_frequent(locations_list, k=3)
     return(locations_list)
             
@@ -85,8 +82,6 @@ def extract_languages(sent):
 
 data_path=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data')
 models_folder=os.path.join(data_path,'models')
-location_txt=models_folder+'\locations.txt'
-language_txt=models_folder+'\languages.txt'
 results_folder=os.path.join(data_path,'results')
 
 
@@ -98,15 +93,6 @@ lsm_s=spacy.load(os.path.join (models_folder,'skill_model_fre'))
 lsm_q=spacy.load(os.path.join (models_folder,'Qualification_model_fre'))
 
 
-with open (location_txt, "r",encoding="utf8") as myfile:
-    data=myfile.read()
-l_list=data.split ('\n')
-l_list=[l.lower() for l in l_list if l!=""]     
-
-with open (language_txt, "r",encoding="utf8") as myfile:
-    data=myfile.read()                
-lang_list=data.split ('\n')
-lang_list=[lang.lower() for lang in lang_list] 
 
 
 #json_file=os.path.join(results_folder,'jds_5.json')
@@ -200,4 +186,4 @@ jd_cvs_combined=df_jd.merge(out,left_on=('jobID'),right_on=('Job ID'),how='outer
 with open(os.path.join(results_folder,'combined_df.pickle'), 'wb') as handle:
     pickle.dump(jd_cvs_combined, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-jd_cvs_combined.to_csv(os.path.join(results_folder, 'jd_cvs_combined.csv'))
+#jd_cvs_combined.to_csv(os.path.join(results_folder, 'jd_cvs_combined.csv'))
