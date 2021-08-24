@@ -105,7 +105,7 @@ def extract_skills(i,sentence,skills_list,cv_name):  # why using i ?
                 
             elif ':' in X.text:
                 skill=X.text.split(":")[1]
-                print ('skill is:', skill)
+#                print ('skill is:', skill)
                 
             else:
                 skills_list.append(X.text)
@@ -276,8 +276,9 @@ def make_final_list(dir_cvs):
     #     END OF make_final_list function
 #==============================================================================
 data_path=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data')
-cvs_folder=os.path.join(data_path,'cvs')
-models_folder=os.path.join(data_path,'models')
+cvs_folder=os.path.join(data_path,'cvs_1')
+#models_folder=os.path.join(data_path,'models')
+models_folder=('models')
 results_folder=os.path.join(data_path,'results')
 
 nlp = spacy.load ('fr_core_news_lg')
@@ -296,8 +297,10 @@ datem = datetime(today.year, today.month, 1)
 
 for i, cv_data in enumerate(cvs_list):
     for couple in cv_data['couples']:
+        print ('name of the cv to get dates is:', cv_data['name_cv'])
         dates_list=couple[1] # 2nd index is of date
-        if str(type(dates_list))!="<class 'NoneType'>" or str(type(dates_list)) !='test':
+        print ('dates_list is:')
+        if str(type(dates_list))!="<class 'NoneType'>" and dates_list !='no date':
                 starting_date=dates_list[0][1]               
                 if len (dates_list)>1:
                     ending_date=dates_list[1][1]

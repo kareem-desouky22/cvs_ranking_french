@@ -1,0 +1,76 @@
+Adrar
+Chlef
+Laghouat
+Oum El-Bouaghi
+Oum El Bouaghi
+Batna
+Béjaïa
+Béjaia
+Biskra
+Béchar
+Blida
+Bouira
+Tamanrasset
+Tébessa
+Tlemcen
+Tiaret
+Tizi-Ouzou
+Tizi Ouzou
+TiziOuzou
+Alger
+Alger centre
+Algiers
+Djelfa
+Jijel
+Sétif
+Saida
+Skikda
+Sidi Bel Abbes
+Sidi Bel-Abbes
+Annaba
+Guelma
+Constantine
+Médéa
+Mostaganem
+M’Sila
+Msila
+Mascara
+Ouargla
+Oran
+El-Bayadh
+El Bayadh
+Illizi
+Bordj Bou Arréridj
+Bordj-Bou-Arréridj
+Boumerdès
+El Taref
+El-Taref
+ELTaref
+Tindouf
+Tissemsilt
+El Oued
+El-Oued
+Eloued
+Khenchela
+Souk Ahras
+Souk-Ahras
+Soukahras
+Tipaza
+Mila
+Aïn Defla
+Ain Defla
+Aindefla
+Naâma
+Naama
+Aïn Témouchent
+Aïn Temouchent
+Aïn-Témouchent
+Aïn-Temouchent
+Ain Témouchent
+AinTémouchent
+AinTemouchent
+Ghardaïa
+Ghardaia
+Relizane
+
+
