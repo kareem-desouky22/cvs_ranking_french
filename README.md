@@ -22,4 +22,4 @@ This project has following .py files:
  
  # ranking_regressor.py
  This file runs the training algorithm on finalized features and label scores. 
- 
+ It will also generate graphs
