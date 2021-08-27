@@ -8,7 +8,7 @@ Created on Sat May 29 14:41:07 2021
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-#import seaborn as sns
+from sklearn.metrics import mean_squared_error, r2_score
 
 import os
 from sklearn.model_selection import train_test_split
@@ -50,7 +50,27 @@ from sklearn.tree import DecisionTreeRegressor
 regressor = DecisionTreeRegressor()
 regressor.fit(x_train, y_train)
 
-y_pred = regressor.predict(x)
+y_pred = regressor.predict(x_test)
 
 
+# The coefficients
+print('Results')
+# The mean squared error
+print('Mean squared error: %.2f'
+      % mean_squared_error(y_test, y_pred))
+# The coefficient of determination: 1 is perfect prediction
+print('Coefficient of determination: %.2f'
+      % r2_score(y_test, y_pred))
+
+# Plot outputs
+
+
+
+
+
+# plt.plot(y_test, 'b')
+# plt.plot(y_pred, 'y')
+# plt.legend(['True', 'Pred'])
+# plt.title('Predicted vs True')
+# plt.show()
 
