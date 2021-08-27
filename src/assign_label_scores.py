@@ -10,7 +10,7 @@ import os
 
 data_path=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data')
 results_folder=os.path.join(data_path,'results')
-df = pd.read_excel (os.path.join(data_path,'cvs_scores_manual.xlsx'),sheet_name='Sorted')
+df = pd.read_excel (os.path.join(data_path,'cvs_scores_manual.xlsx'),sheet_name='Sorted', engine='openpyxl')
 print (df)
 
 mymap = {'-':0, 'N/C':0, 'aucun':0}

@@ -84,10 +84,15 @@ def extract_qualifications(i,sentence,qualifications_list,cv_name):
     for X in doc_qual.ents:
         if X.label_=="qualification":
             contains_digit = any(map(str.isdigit, X.text))
-            if contains_digit or ':' in X.text:
+            if contains_digit:
                 pass
-            else:            
-                qualifications_list.append(X.text)
+            elif ':' in X.text: 
+                qual=X.text.split(":")[1]            	
+                  
+                qualifications_list.append(qual)
+            else:
+            	qualifications_list.append(X.text)
+            
               
     qualifications_list=top_frequent(qualifications_list, k=15)
     return(qualifications_list)
@@ -97,7 +102,6 @@ def extract_skills(i,sentence,skills_list,cv_name):  # why using i ?
     for X in doc_skills.ents:
         if X.label_=="skills":
             
-
             contains_digit = any(map(str.isdigit, X.text))
             if contains_digit:            
                 
@@ -105,6 +109,7 @@ def extract_skills(i,sentence,skills_list,cv_name):  # why using i ?
                 
             elif ':' in X.text:
                 skill=X.text.split(":")[1]
+                skills_list.append(skill)
 #                print ('skill is:', skill)
                 
             else:
@@ -263,11 +268,10 @@ def make_final_list(dir_cvs):
             cvs_dict['phone_numbers_cv']=phone_list
             cvs_dict['emails_cv']=email_list
             cvs_dict['job_titles_cv']=jobs_titles_list
-#            cvs_dict['jobs_titles_index_list']=jobs_titles_index_list
             cvs_dict['recent_job_cv']='no job'
             cvs_dict['recent_job_title_cv']=0
             cvs_dict['total_experience_cv']=0
-            # cvs_dict['duration']='2 years'
+
             
             cvs_list.append(cvs_dict)
     return cvs_list
@@ -276,15 +280,15 @@ def make_final_list(dir_cvs):
     #     END OF make_final_list function
 #==============================================================================
 data_path=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data')
-cvs_folder=os.path.join(data_path,'cvs_1')
-#models_folder=os.path.join(data_path,'models')
-models_folder=('models')
+cvs_folder=os.path.join(data_path,'cvs')
+models_folder=os.path.join(data_path,'models')
+
 results_folder=os.path.join(data_path,'results')
 
 nlp = spacy.load ('fr_core_news_lg')
 lsm_j=spacy.load(os.path.join (models_folder,'job_model_fre'))
 lsm_s=spacy.load(os.path.join (models_folder,'skill_model_fre'))
-lsm_q=spacy.load(os.path.join (models_folder,'Qualification_model_fre'))
+lsm_q=spacy.load(os.path.join (models_folder,'qualification_model_fre'))
 
 
 main_dictionary={}
@@ -335,7 +339,7 @@ with open(os.path.join(results_folder,'ranking_list.pickle'), 'wb') as handle:
 #df.to_csv(os.path.join(results_folder,'ranking1.csv'))
 end_time=datetime.now()
 simulation_time=end_time-start_time
-print ('time for features extraction from CV is:', simulation_time, ' seconds')
+print ('time for features extraction from CV is:', simulation_time, ' minutes')
 
 
 

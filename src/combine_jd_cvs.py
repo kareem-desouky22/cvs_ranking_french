@@ -90,14 +90,14 @@ results_folder=os.path.join(data_path,'results')
 nlp = spacy.load ('fr_core_news_lg')
 lsm_j=spacy.load(os.path.join (models_folder,'job_model_fre'))
 lsm_s=spacy.load(os.path.join (models_folder,'skill_model_fre'))
-lsm_q=spacy.load(os.path.join (models_folder,'Qualification_model_fre'))
+lsm_q=spacy.load(os.path.join (models_folder,'qualification_model_fre'))
 
 
 
 
 #json_file=os.path.join(results_folder,'jds_5.json')
 #
-with open(os.path.join(data_path,'jds_5.json'),encoding="utf8") as f:
+with open(os.path.join(data_path,'jds.json'),encoding="utf8") as f:
   data = json.load(f)
   
 #data=json.loads(json_file)
@@ -153,7 +153,7 @@ df_jd['final_locs_jd'] =df_jd['locations_list_misc']+df_jd['location_jd']
 
 
 # Delete unnecessary columns
-df_jd.drop(['Candidate-profile','Job_mission','candidate_profile','job_mission','skills_list_profile','skills_list_mission','Job-miscs','job_misc','Job_introduction','industry','Sub-industry','tags','roleDesignation','skills','jobDescription','qualifications_jd','location_jd','qualifications_list_profile','qualifications_list_mission','locations_list_misc'],axis=1, inplace=True)
+df_jd.drop(['Candidate-profile','Job_mission','candidate_profile','job_mission','skills_list_profile','skills_list_mission','Job-miscs','job_misc','Job_introduction','industry','Sub-industry','tags','roleDesignation','skills','qualifications_jd','location_jd','qualifications_list_profile','qualifications_list_mission','locations_list_misc'],axis=1, inplace=True)
 
 df_jd.to_csv('jds.csv')
 

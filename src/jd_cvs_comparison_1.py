@@ -6,7 +6,7 @@ Created on Mon Apr  5 23:40:06 2021
 """
 
 import time
-start_time= time.now()
+
 import pandas as pd
 import gensim.downloader as api
 from gensim import corpora
@@ -65,11 +65,16 @@ df['total_experience_score_cv'][mask5_exp] = 9
 df['total_experience_score_cv'][mask6_exp] = 10
 
 
+
+
+
+
 mask1_job_stay = (df['recent_job_duration'] <365) 
 mask2_job_stay = (df['recent_job_duration'] >365) & (df['recent_job_duration'] <365*2)
 mask3_job_stay = (df['recent_job_duration'] >365*2) & (df['recent_job_duration'] <365*4)
 mask4_job_stay = (df['recent_job_duration'] >365*4) & (df['recent_job_duration'] <365*6)
 mask5_job_stay= (df['recent_job_duration'] >365*6) 
+mask6_job_stay= (type(df['recent_job_duration']==str) )
 
 df['recent_exp_score_cv'][mask1_exp] = 4
 df['recent_exp_score_cv'][mask2_exp] = 6
@@ -224,11 +229,11 @@ df['languages_similarity_score_sum'] = df.apply(lambda x: get_similarity(x['lang
 # to do: change name of exp 
 
 
-df_classifier_features=df[['name','total_experience_score_cv','recent_exp_score_cv','relevant_experience_score','qualifications_similarity_score_max','qualifications_similarity_score_sum','skills_similarity_score_max','skills_similarity_score_sum','locations_similarity_score_max','locations_similarity_score_sum']]
+df_classifier_features=df[['cv_score','name','total_experience_score_cv','recent_exp_score_cv','relevant_experience_score','qualifications_similarity_score_max','qualifications_similarity_score_sum','skills_similarity_score_max','skills_similarity_score_sum','locations_similarity_score_max','locations_similarity_score_sum']]
 ## to do: change name of exp 
 #
 df_classifier_features.to_csv(os.path.join(results_folder,'classifier_features.csv'))
 
-end_time=time.now()
+
 simulation_time=end_time-start_time
-print ('time for scoring CV against JDs  is:', simulation_time, ' seconds')
+print ('time for scoring CV against JDs  is:', simulation_time, ' minutes')

@@ -33,7 +33,10 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report, accuracy_score
 
 
-data =pd.read_csv('classifier_features.csv',  index_col=0)
+results_folder=os.path.join(os.path.abspath(os.path.join(__file__,"../../")),'data/results')
+file = os.path.join(results_folder,'classifier_features.csv')
+
+data =pd.read_csv(file,  index_col=0)
 data=data.drop(['name'],axis=1)
 data=data.fillna(0)
 
